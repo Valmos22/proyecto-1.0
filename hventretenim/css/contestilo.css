@@ -1,0 +1,123 @@
+#contenidos{
+    width: 100%;
+    height: auto;
+    margin: auto;
+    position: relative;
+    
+}
+
+#scrollUp {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: url(../img/ir-arriba.png);
+    background-size: cover;
+  }
+
+body{
+    background:#fff;
+    /*background-image: url(../img/anime/best.jpg);*/
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+section{
+    width: 800px;
+    height: 100%;
+    background: rgb(230, 225, 225);
+    float: left;
+    border-radius: 10px;
+    margin-top: 20px;
+
+}
+
+article{
+    width: 780px;
+    height: 100%;
+    background: #fff;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+article img{
+    width: 700px;
+    height: 300px;
+    margin:10px;
+    text-align: left;
+    border-radius: 10px;
+}
+
+article p,h3,b{
+    margin-left: 10px;
+    font-size: 18px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.poco{
+    display: inline-block;
+    text-align: center;
+}
+
+aside{
+    width: 300px;
+    background: rgb(230, 225, 225);
+    height: 830px;
+    float: left;
+    margin-left: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    
+}
+
+aside div img{
+    width: 103px;
+    height: 150px;
+    margin: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    
+    
+}
+
+aside div p{
+    color: black;
+}
+
+footer{
+    width: 100%;
+    height: 40px;
+    background:rgb(44, 43, 43);
+    float: left;
+    margin-top: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color:gray;
+
+}
+
+
+.comentar{
+    width: 100%;
+    text-align: center;
+}
+
+.lbl-comentario{
+    font-family: cursive;
+    font-size: 20px;
+
+    text-shadow: 1px 2px 1px rgb(44, 43, 43);
+}
+
+/*clases*/
+.ancho_menu_home{width: 900px;}
+.ancho_menu_paginas{width: 970px;}
+
+.menu:link{color: white; text-decoration: none;}
+.menu:visited{color: white; text-decoration: none;}
+.menu:hover{color: white; text-decoration: none; text-shadow: 0 0 13px white}
+.menu:active{color: white; text-decoration: none;}
