@@ -1,0 +1,414 @@
+
+            1) CREACION DE TABLAS
+
+
+CREATE TABLE especialidades(
+id_especialidad VARCHAR2(10) NOT NULL,
+nombre_especialidad  VARCHAR2(20) NOT NULL,
+creditos NUMBER(10) NOT NULL
+);
+
+CREATE TABLE servicios(
+id_servicio VARCHAR2(10) NOT NULL,
+nombre_servicio VARCHAR2(20) NOT NULL,
+ocupacion VARCHAR2(20) NOT NULL,
+procedimiento VARCHAR2(20) NOT NULL
+);
+
+CREATE TABLE puntos_atencion(
+id_punto_atencion VARCHAR2(10),
+nombre_patencion VARCHAR2(20) NOT NULL,
+direccion VARCHAR2(10) NOT NULL,
+telefono NUMBER(10) NOT NULL
+);
+
+CREATE TABLE ciudades(
+id_ciudad VARCHAR2(10) NOT NULL,
+nombre_ciudad VARCHAR2(20) NOT NULL
+);
+
+CREATE TABLE consultorios(
+id_consultorio VARCHAR2(10) NOT NULL,
+nombre_consultorio VARCHAR2(20) NOT NULL,
+piso NUMBER(10) NOT NULL
+);
+
+CREATE TABLE turnos(
+id_turno VARCHAR2(10) NOT NULL,
+hora_inicio VARCHAR2(10) NOT NULL,
+hora_fin VARCHAR2(10) NOT NULL,
+cod_medico VARCHAR2(10) NOT NULL,
+cod_consultorio VARCHAR2(10) NOT NULL
+);
+
+CREATE TABLE asesores(
+id_asesor VARCHAR2(10) NOT NULL,
+nombre_asesor VARCHAR2(20) NOT NULL,
+apellido VARCHAR2(20) NOT NULL
+);
+
+CREATE TABLE medicos(
+id_cedula VARCHAR2(10) NOT NULL,
+nombre_medico VARCHAR2(20) NOT NULL,
+apellido_medico VARCHAR2(20) NOT NULL,
+telefono NUMBER(10) NOT NULL,
+direccion VARCHAR2(20) NOT NULL,
+correo VARCHAR2(20) NOT NULL,
+cod_especialidad VARCHAR2(10) NOT NULL
+);
+
+CREATE TABLE pacientes(
+id_cedula VARCHAR2(10) NOT NULL,
+nombre_paciente VARCHAR2(20) NOT NULL,
+apellido_paciente VARCHAR2(20) NOT NULL,
+edad_paciente NUMBER(3) NOT NULL,
+estado_civil VARCHAR2(20) NULL,
+telefono NUMBER(10) NOT NULL,
+direccion VARCHAR2(20) NULL,
+correo VARCHAR2(20) NULL,
+estrato VARCHAR2(2) NOT NULL,
+cod_ciudad VARCHAR2(10) NOT NULL,
+tipo_sangre VARCHAR2(10) NOT NULL
+);
+
+CREATE TABLE inicio_sesiones(
+cod_sesion VARCHAR2(10) NOT NULL,
+login VARCHAR2(10) NOT NULL
+);
+
+CREATE TABLE citas(
+id_cita VARCHAR2(10) NOT NULL,
+hora VARCHAR2(10) NOT NULL,
+cod_paciente VARCHAR2(10) NOT NULL,
+cod_turno VARCHAR2(10) NOT NULL,
+cuota_pago NUMBER(10,2) NOT NULL,
+fecha DATE,
+cod_servicio VARCHAR2(10) NOT NULL,
+cod_asesor VARCHAR2(10) NOT NULL,
+cod_punto_atencion VARCHAR2(10) NOT NULL
+);
+
+                            2) RESTRINCIONES CHECK
+
+ALTER TABLE pacientes
+ADD constraint ck_paciente 
+CHECK (correo like '%@%');
+
+ALTER TABLE medicos
+ADD constraint ck_medico 
+CHECK (correo like '%@%');
+
+ALTER TABLE citas
+ADD constraint ck_pago 
+CHECK (cuota_pago>=0);
+
+ALTER TABLE pacientes
+ADD constraint ck_edad 
+CHECK (edad_paciente>=0);
+
+ALTER TABLE pacientes
+ADD CONSTRAINT ck_sangre
+CHECK(tipo_sangre like 'A_' or tipo_sangre like 'B_' or tipo_sangre like 'O_');
+
+
+
+
+                           3) LLAVES PRIMARIAS 
+
+ALTER TABLE especialidades ADD CONSTRAINT PK_espec
+PRIMARY KEY (id_especialidad);
+
+ALTER TABLE servicios ADD CONSTRAINT PK_servicio
+PRIMARY KEY (id_servicio);
+
+ALTER TABLE puntos_atencion ADD CONSTRAINT PK_atencion
+PRIMARY KEY (id_punto_atencion);
+
+ALTER TABLE ciudades ADD CONSTRAINT PK_ciudad
+PRIMARY KEY (id_ciudad);
+
+ALTER TABLE consultorios ADD CONSTRAINT PK_consultorio
+PRIMARY KEY (id_consultorio);
+
+ALTER TABLE turnos ADD CONSTRAINT PK_turno
+PRIMARY KEY (id_turno);
+
+ALTER TABLE asesores ADD CONSTRAINT PK_asesor
+PRIMARY KEY (id_asesor);
+
+ALTER TABLE medicos ADD CONSTRAINT PK_medico
+PRIMARY KEY (id_cedula);
+
+ALTER TABLE pacientes ADD CONSTRAINT PK_paciente
+PRIMARY KEY (id_cedula);
+
+ALTER TABLE inicio_sesiones ADD CONSTRAINT PK_sesion
+PRIMARY KEY (cod_sesion);
+
+ALTER TABLE citas ADD CONSTRAINT PK_cita
+PRIMARY KEY (id_cita);
+
+                           5) LLAVES FORANEAS 
+
+ALTER TABLE turnos ADD CONSTRAINT fk_turnom
+FOREIGN KEY(cod_medico)
+REFERENCES medicos(id_cedula);
+
+ALTER TABLE turnos ADD CONSTRAINT fk_turnoc
+FOREIGN KEY(cod_consultorio)
+REFERENCES consultorios(id_consultorio);
+
+ALTER TABLE medicos ADD CONSTRAINT fk_medico
+FOREIGN KEY(cod_especialidad)
+REFERENCES especialidades(id_especialidad);
+
+ALTER TABLE pacientes ADD CONSTRAINT fk_paciente
+FOREIGN KEY(cod_ciudad)
+REFERENCES ciudades(id_ciudad);
+
+ALTER TABLE citas ADD CONSTRAINT fk_citap
+FOREIGN KEY(cod_paciente)
+REFERENCES pacientes(id_cedula);
+
+ALTER TABLE citas ADD CONSTRAINT fk_citas
+FOREIGN KEY(cod_servicio)
+REFERENCES servicios(id_servicio);
+
+ALTER TABLE citas ADD CONSTRAINT fk_citaa
+FOREIGN KEY(cod_asesor)
+REFERENCES asesores(id_asesor);
+
+ALTER TABLE citas ADD CONSTRAINT fk_citapu
+FOREIGN KEY(cod_punto_atencion)
+REFERENCES puntos_atencion(id_punto_atencion);
+
+ALTER TABLE inicio_sesiones ADD CONSTRAINT fk_sesion
+FOREIGN KEY(cod_sesion)
+REFERENCES pacientes(id_cedula);
+
+                           4) INSERCION DE DATOS A LAS TABLAS
+
+INSERT INTO ciudades VALUES(
+'011','Cali');
+INSERT INTO ciudades VALUES(
+'012','Medellin');
+INSERT INTO ciudades VALUES(
+'013','Bogota');
+INSERT INTO ciudades VALUES(
+'014','Pereira');
+INSERT INTO ciudades VALUES(
+'015','Istmina');
+
+
+INSERT INTO pacientes VALUES(
+'114398612','Luis Carlos','Galan',20,'soltero',3425621,'cra 25 #72N','boleo@gmail.com','1','011','A+');
+INSERT INTO pacientes VALUES(
+'635894','Maria','Galiano',18,'soltero',3125687895,'cra 20 #23','mari@gmail.com','1','011','O+');
+INSERT INTO pacientes VALUES(
+'1128369689','David Luis','Alegria',21,'soltero',312562,'cra 50 #03','david@gmail.com','1','011','B+');
+INSERT INTO pacientes VALUES(
+'112856','Luisferck','Alegria',22,'casado',4265236,'cra 30 #27','luis@gmail.com','2','012','B+');
+INSERT INTO pacientes VALUES(
+'112236789','yeison','Lucumi',19,'union libre',312896328,'cra 26 #35','yeiii@gmail.com','2','012','B+');
+INSERT INTO pacientes VALUES(
+'114698325','Yordi','Ibarguen',23,'casado',4286397,'cra 30 #27','yordi@gmail.com','2','012','O+');
+INSERT INTO pacientes VALUES(
+'116856','Everni','Mosquera',36,'soltero',3126523891,'cra 40 #20','eve@gmail.com','2','015','B+');
+INSERT INTO pacientes VALUES(
+'9635862','Manuel Maximo','Mosquera',86,'casado',4986321,'cra 26j #71U','mmaximo@gmail.com','1','013','A-');
+INSERT INTO pacientes VALUES(
+'9236478','Ferney','Cordoba',50,'soltero',3005632489,'cra 10 #56S','fer15@gmail.com','4','013','A+');
+INSERT INTO pacientes VALUES(
+'965841236','Jaider','Cordoba',10,'union libre',3156984621,'cra 70 #27N','jader10@gmail.com','1','014','O+');
+INSERT INTO pacientes VALUES(
+'9263569842','Sofia','Castillo',16,'soltero',3132658943,'cra 12 #13C','sofi@gmail.com','2','015','O+');
+
+
+
+INSERT INTO servicios VALUES(
+'000','Atención de urgencias');
+INSERT INTO servicios VALUES(
+'111','Atención odontológica');
+INSERT INTO servicios VALUES(
+'222','Laboratorios');
+INSERT INTO servicios VALUES(
+'333','Radiologia e imagenes dx');
+INSERT INTO servicios VALUES(
+'444','Patoligia');
+INSERT INTO servicios VALUES(
+'555','Patoligia');
+INSERT INTO servicios VALUES(
+'666','Cardiologia');
+INSERT INTO servicios VALUES(
+'777','Ortopedia');
+INSERT INTO servicios VALUES(
+'888','Partos y Cesáreas');
+
+
+
+INSERT INTO puntos_atencion VALUES(
+'P1','Duate Cancino','Cl96 #28e','4140707');
+INSERT INTO puntos_atencion VALUES(
+'P2','Mario Correa Rengifo','Cra78 #2A','3180020');
+INSERT INTO puntos_atencion VALUES(
+'P3','Hospital C. Holmes','Cl72u #28e','3777777');
+INSERT INTO puntos_atencion VALUES(
+'P4','Clinica Colombia','46 #9C-85','3850285');
+
+
+
+INSERT INTO consultorios VALUES(
+'C1','Cirugia',3);
+INSERT INTO consultorios VALUES(
+'C2','Odontologia',1);
+INSERT INTO consultorios VALUES(
+'C3','Radiologia',2);
+INSERT INTO consultorios VALUES(
+'C4','Biopsia',2);
+INSERT INTO consultorios VALUES(
+'C5','Maternidad',1);
+INSERT INTO consultorios VALUES(
+'C6','Cardiologia',3);
+
+
+INSERT INTO especialidades VALUES(
+'E1','CIRUJANO',100);
+INSERT INTO especialidades VALUES(
+'E2','CARDIOLOGO',95);
+INSERT INTO especialidades VALUES(
+'E3','OFTALMOLOGO',80);
+INSERT INTO especialidades VALUES(
+'E4','PEDIATRA',60);
+INSERT INTO especialidades VALUES(
+'E5','UROLOGO',98);
+INSERT INTO especialidades VALUES(
+'E6','RADIOLOGO',75);
+INSERT INTO especialidades VALUES(
+'E7','RADIOLOGO',80);
+INSERT INTO especialidades VALUES(
+'E8','ODONTOLOGO',85);
+
+
+INSERT INTO medicos VALUES(
+'111111','Hugo','Valderrama','3005322220','Cr.26j #72','valderrama5@gmailcom','E1');
+INSERT INTO medicos VALUES(
+'222222','Ferney','Mosquera','3156235849','Cl.12 56N','fer12@gmail.com','E2');
+INSERT INTO medicos VALUES(
+'333333','Uldarico','Valderrama','3127096845','Cra 50S','huvalmos@gmail.com','E7');
+INSERT INTO medicos VALUES(
+'444444','Delman','Castro','3116589268','Cra 23U-14','delcas@hotmail.com','E4');
+INSERT INTO medicos VALUES(
+'555555','Cecilia','Mendez','658912','cl.32 5N','ceci@gmail.com','E5');
+INSERT INTO medicos VALUES(
+'666666','Clarena','Mosval','595621','cra.32-6S','yarli@gmail.com','E6');
+INSERT INTO medicos VALUES(
+'77777','Marta','Castillo','66981','cra.20-6S','casti@gmail.com','E8');
+
+
+
+
+INSERT INTO turnos VALUES(
+'T1','7:AM','9:AM','111111','C1');
+INSERT INTO turnos VALUES(
+'T2','7;30','9:30','77777','C2');
+INSERT INTO turnos VALUES(
+'T3','9:AM','11:AM','333333','C3');
+INSERT INTO turnos VALUES(
+'T4','2:PM','4:PM','555555','C4');
+INSERT INTO turnos VALUES(
+'T5','9:30','11:AM','444444','C5');
+INSERT INTO turnos VALUES(
+'T6','4:PM','6:PM','222222','C6');
+
+
+
+
+INSERT INTO asesores VALUES(
+'A1','Wilmer','Montero');
+INSERT INTO asesores VALUES(
+'A2','Carlos Jesus','Silva');
+INSERT INTO asesores VALUES(
+'A3','Clara Ines','Moreno');
+
+
+
+INSERT INTO inicio_sesiones VALUES(
+'114398612','114398612');
+INSERT INTO inicio_sesiones VALUES(
+'635894','635894');
+INSERT INTO inicio_sesiones VALUES(
+'1128369689','1128369689');
+INSERT INTO inicio_sesiones VALUES(
+'112856','112856');
+INSERT INTO inicio_sesiones VALUES(
+'112236789','112236789');
+INSERT INTO inicio_sesiones VALUES(
+'114698325','114698325');
+INSERT INTO inicio_sesiones VALUES(
+'116856','116856');
+INSERT INTO inicio_sesiones VALUES(
+'9635862','9635862');
+INSERT INTO inicio_sesiones VALUES(
+'9236478','9236478');
+INSERT INTO inicio_sesiones VALUES(
+'965841236','965841236');
+INSERT INTO inicio_sesiones VALUES(
+'9263569842','9263569842');
+
+
+
+
+INSERT INTO citas VALUES(
+'CITA1','8:AM','114398612','T1',100.30,TO_DATE('24/01/2018','dd/mm/yyyy'),'000','A1','P1');
+INSERT INTO citas VALUES(
+'CITA2','2:PM','635894','T4','0.00',TO_DATE('14/06/2018','dd/mm/yyyy'),'111','A1','P3');
+INSERT INTO citas VALUES(
+'CITA3','9:AM','114698325','T3','2500.00',TO_DATE('02/08/2018','dd/mm/yyyy'),'222','A2','P4');
+INSERT INTO citas VALUES(
+'CITA4','10:AM','9236478','T5','0.00',TO_DATE('12/03/2018','dd/mm/yyyy'),'555','A2','P2');
+INSERT INTO citas VALUES(
+'CITA5','4:15:AM','9263569842','T6','15000.63',TO_DATE('05/05/2018','dd/mm/yyyy'),'888','A3','P1');
+INSERT INTO citas VALUES(
+'CITA6','8:30','116856','T2','500000.00',TO_DATE('26/06/2018','dd/mm/yyyy'),'333','A3','P2');
+
+
+                               5) CONSULTAS
+
+* MOSTRAR NOMBRE, EDAD Y CIUDAD DE PACIENTES QUE ESTEN CASADOS y TIPO DE SANGRES SEA O+.
+
+SELECT nombre_paciente, edad_paciente, nombre_ciudad
+FROM pacientes,ciudades
+WHERE ciudades.id_ciudad=pacientes.cod_ciudad
+and estado_civil='casado' and tipo_sangre like 'O+';
+
+* MOSTRAR PACIENTES QUE TENGAN ENTRE 18 Y 40 AÑOS,
+
+SELECT nombre_paciente, edad_paciente
+FROM pacientes
+WHERE edad_paciente BETWEEN 18 and 40;
+
+* MOSTRAR NOMBRE DEL MEDICO Y SU ESPECIALIDAD.
+
+SELECT nombre_medico,apellido_medico, nombre_especialidad
+FROM medicos,especialidades
+WHERE especialidades.id_especialidad=medicos.cod_especialidad;
+
+* MOSTRAR CITAS ECHAS POR LOS ASESORES, DONDE ES LA CITA, Y DE QUIEN.
+
+SELECT nombre_asesor,apellido, id_cita, nombre_paciente, apellido_paciente, nombre_patencion
+FROM asesores,citas,pacientes,puntos_atencion
+WHERE asesores.id_asesor=citas.cod_asesor 
+and pacientes.id_cedula=citas.cod_paciente
+and puntos_atencion.id_punto_atencion=citas.cod_punto_atencion;
+
+* MOSTRAR CITA INGRESANDO EL LA CEDULA DEL PACIENTE Ej:116856 Y LA CUOATA A PAGAR SIN DECIMALES.
+
+SELECT hora, fecha, nombre_paciente, apellido_paciente, 
+trunc(cuota_pago)as Costo_Cita, nombre_medico, apellido_medico, nombre_patencion
+FROM medicos,pacientes,citas,puntos_atencion,turnos
+WHERE medicos.id_cedula=turnos.cod_medico
+AND pacientes.id_cedula=citas.cod_paciente 
+AND puntos_atencion.id_punto_atencion=citas.cod_punto_atencion
+AND turnos.id_turno=citas.cod_turno
+AND cod_paciente=&id_cedula;
+
